@@ -23,11 +23,11 @@ export default function SignupPage() {
                     <input className="mb-4"
                         id="email" name="email" type="email" defaultValue="user@test.com" required />
                     <hr className="w-1/2 mx-auto" />
-                    <label htmlFor="user" className="m-2">
+                    <label htmlFor="username" className="m-2">
                         Username
                     </label>
                     <input className="mb-4 text-black"
-                        id="user" name="user" type="text" defaultValue="testUser" required />
+                        id="username" name="username" type="text" defaultValue="testUser" required />
                     <hr className="w-1/2 mx-auto" />
                     <label htmlFor="password" className="m-2">
                         Password

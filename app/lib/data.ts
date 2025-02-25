@@ -52,3 +52,7 @@ export async function UserPosts(username: string){
         throw new Error('Failed to fetch profile posts.');
     }
 }
+
+export async function PostUser(){
+
+}

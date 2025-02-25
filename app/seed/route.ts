@@ -36,17 +36,24 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 // }
 
 export async function GET() {
-    // try {
-    //     const result = await sql.begin((sql) => [
-    //     //   seedUsers(),
-    //     //   seedPosts(),
-    //     ]);
-    
-    //     return Response.json({ message: 'Database seeded successfully' });
-    //   } catch (error) {
-    //     return Response.json({ error }, { status: 500 });
-    //   }
+    try {
+        // const result = await sql.begin((sql) => [
+        //     //   seedUsers(),
+        //     //   seedPosts(),
+        // ]);
+        // const email = '';
+        // const username = 'JohnHelldiver'
+        // const emailEx = await sql`SELECT COUNT(*) FROM users WHERE email=${email}`;
+        // const userEx = await sql`SELECT COUNT(*) FROM users WHERE username=${username}`;
 
-    return Response.json({message: 'Database already seeded'});
+
+        // const count = exists.count;
+        // console.log(count);
+        return Response.json({ message: `error` });
+    } catch (error) {
+        return Response.json({ error }, { status: 500 });
+    }
+
+    return Response.json({ message: 'Database already seeded' });
 }
 

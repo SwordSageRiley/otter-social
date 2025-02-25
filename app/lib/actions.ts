@@ -8,6 +8,8 @@ import { User } from "@/app/lib/definitions";
 
 import postgres from 'postgres';
 
+
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function authenticate(
@@ -15,7 +17,7 @@ export async function authenticate(
     formData: FormData
 ) {
     try {
-        await signIn('credentials', formData);
+        await signIn('login', formData);
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -34,22 +36,8 @@ export async function signup(
     formData: FormData
 ) {
     try {
-
-        //const count = await newUser(formData.email, formData.username);
-
-        const parsedCredentials = z
-            .object({ email: z.string().email(), username: z.string(), password: z.string().min(6) })
-            .safeParse(formData);
-        if (parsedCredentials.error) {
-            console.log(parsedCredentials.error.issues);
-        }
-        if (parsedCredentials.success) {
-            const { email, password } = parsedCredentials.data;
-        }
-
-
-
-
+        console.log('signup action');
+        await signIn('signup', formData);
     } catch (error) {
         return 'something went wrong'
     }

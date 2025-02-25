@@ -17,7 +17,7 @@ export default function LoginPage() {
         <div className="flex p-6 bg-green-900 min-h-screen text-white justify-center">
             <Suspense >
                 <form action={formAction} className="flex flex-col text-center">
-                    <label htmlFor="user" className="m-2">
+                    <label htmlFor="email" className="m-2">
                         Email
                     </label>
                     <input className="mb-4"

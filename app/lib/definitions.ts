@@ -19,6 +19,6 @@ export type profileType = {
 export type User = {
     user_id: string,
     username: string,
-    password: string,
+    pw: string,
     email: string
 }

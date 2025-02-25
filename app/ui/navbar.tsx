@@ -30,10 +30,10 @@ export default function Navbar() {
             {pn === '/settings' ? (<Link href='/settings' className="flex"><BsGearFill /><p className="font-bold">Settings</p></Link>)
                 : (<Link href='/settings' className="flex hover:underline"><BsGear /><p>Settings</p></Link>)}
 
-            <form action={async () => {
+            {/* <form action={async () => {
                 'use server';
                 await signOut({redirectTo: '/'});
-            }} />
+            }} /> */}
         </div>
     );
 }
