@@ -33,8 +33,9 @@ async function checkNewUser(email: string, username: string) {
         }
         return true;
     } catch (error) {
-        console.error('Error in database:', error);
-        throw new Error('Failed to verify new user.');
+        //console.error('Failed to verify new user:', error);
+        console.log(error);
+        throw error;
     }
 }
 
@@ -42,16 +43,15 @@ async function postNewUser(email: string, username: string, password: string) {
     try {
         const ins = await sql`
             INSERT INTO users (username, pw, email)
-            VALUES (${username}, ${password}, ${email})
-            ON CONFLICT (user_id) DO NOTHING;
-            `;
-            return ins;
+            VALUES (${username}, ${password}, ${email})            `;
+        return ins;
     } catch (error) {
-
+        console.error('Failed to create user:', error);
+        throw new Error('Failed to create user.');
     }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
         Credentials({
@@ -73,24 +73,18 @@ export const { auth, signIn, signOut } = NextAuth({
         Credentials({
             id: 'signup',
             async authorize(credentials) {
-                console.log('started singup');
                 const parsedCredentials = z
                     .object({ email: z.string().email(), password: z.string().min(6), username: z.string() })
                     .safeParse(credentials);
-                    console.log('parsed credentials');
                 if (parsedCredentials.success) {
-                    console.log('credentials good');
                     const { email, password, username } = parsedCredentials.data;
                     const newUser = await checkNewUser(email, username);
-                    console.log('checked if new user');
                     if (newUser) {
-                        console.log('new user');
                         const hashedPassword = await bcrypt.hash(password, 10);
-                        const ins = await postNewUser(username, email, hashedPassword);
-                        console.log('posted new user');
+                        const ins = await postNewUser(email, username, hashedPassword);
                     }
                     const user = await getUser(email);
-                    console.log('retrieved user data');
+                    console.log(user);
                     if (!user) return null;
                     return user;
                 }
@@ -100,4 +94,5 @@ export const { auth, signIn, signOut } = NextAuth({
         }),
     ],
 });
+
 

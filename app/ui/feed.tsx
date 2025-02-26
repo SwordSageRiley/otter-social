@@ -5,7 +5,7 @@ export default async function Feed(){
 
     const posts = await discoverFeed();
     return (
-        <div className="flex flex-col">
+            <div className="flex flex-col">
             {posts.map(post => {
                 return <Post postData={post}/>
             })}
