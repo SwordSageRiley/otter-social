@@ -1,22 +1,34 @@
-'use server';
+// 'use server';
 
-import postgres from "postgres";
+//import postgres from "postgres";
+import { sql } from "@vercel/postgres";
+import { createPool } from '@vercel/postgres';
+
+const pool = createPool({
+    connectionString: process.env.POSTGRES_URL,
+});
 
 import { postType, profileType } from "@/app/lib/definitions";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: require });
-const sql2 = postgres(process.env.POSTGRES_URL!, { ssl: require });
+//const sql2 = postgres(process.env.POSTGRES_URL!, { ssl: require });
 
 export async function discoverFeed() {
     try {
-        const postdata = await sql2<postType[]>`
-        SELECT posts.body, posts.post_id, posts.posted, users.user_id, users.username, users.pfp_url
-        FROM posts
-        JOIN users ON posts.user_id = users.user_id
-        ORDER BY posts.posted DESC
-        LIMIT 15`;
+        const postdata = await pool.sql<postType[]>`
+         SELECT posts.body, posts.post_id, posts.posted, users.user_id, users.username, users.pfp_url
+         FROM posts
+         JOIN users ON posts.user_id = users.user_id
+         ORDER BY posts.posted DESC
+         LIMIT 15`;
 
-        return postdata;
+        // const postdata = await sql2<postType[]>`
+        // SELECT posts.body, posts.post_id, posts.posted, users.user_id, users.username, users.pfp_url
+        // FROM posts
+        // JOIN users ON posts.user_id = users.user_id
+        // ORDER BY posts.posted DESC
+        // LIMIT 15`;
+
+        return postdata.rows;
 
     } catch (error) {
         console.error('Database Error:', error);

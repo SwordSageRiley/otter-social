@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 
 import { auth } from '@/auth'
-//import { AuthProvider } from "@/app/authProvider";
+import { AuthProvider } from "@/app/authProvider";
 import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
@@ -27,9 +27,9 @@ export default async function RootLayout({ children, }: { children: React.ReactN
     <html lang="en">
       <body>
         <div className="min-h-8 bg-blue-800"></div>
-        {/* <SessionProvider session={session} > */}
+        <SessionProvider session={session} >
           {children}
-        {/* </SessionProvider> */}
+        </SessionProvider>
       </body>
     </html>
   )
