@@ -1,3 +1,4 @@
+
 import Post from "./feedpost";
 import { discoverFeed } from "@/app/lib/data";
 
@@ -7,7 +8,7 @@ export default async function Feed(){
     return (
             <div className="flex flex-col">
             {posts.map(post => {
-                return <Post postData={post}/>
+                return <Post postData={post} key={post.post_id}/>
             })}
         </div>
     );

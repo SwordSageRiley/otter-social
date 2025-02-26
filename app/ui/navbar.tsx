@@ -2,9 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import {signOut} from '@/auth';
 
-import {
+import {    
     BsHouseDoor, BsHouseDoorFill,
     BsBell, BsBellFill,
     BsGear, BsGearFill,

@@ -1,4 +1,3 @@
-'use client';
 
 import Feed from "@/app/ui/feed";
 
@@ -10,9 +9,6 @@ export default function Home() {
 
   return (
     <div>
-      <div>
-        {/* <p>{`${session}`}</p> */}
-      </div>
       <Feed />
     </div>
   );

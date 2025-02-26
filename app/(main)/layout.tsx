@@ -1,7 +1,5 @@
 import "@/app/globals.css";
 
-import { Suspense } from "react";
-
 import Navbar from "@/app/ui/navbar";
 
 export default async function MainLayout({
@@ -17,9 +15,7 @@ export default async function MainLayout({
           <Navbar />
         </section>
         <section className="w-5/12 border border-solid border-gray-800 p-2" id="content">
-          <Suspense>
             {children}
-          </Suspense>
         </section>
         <section className="" id="search">
           <div className="sticky top-16">
