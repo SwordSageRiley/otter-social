@@ -22,16 +22,16 @@ export default function LoginPage() {
                         <label htmlFor="email" className="m-2">
                             Email
                         </label>
-                        <input className="mb-4"
-                            id="email" name="email" type="email" placeholder="Enter your email" required />
+                        <input className="mb-4 text-black"
+                            id="email" name="email" type="email" placeholder="Enter your email" defaultValue='user@nextmail.com' required />
                         <hr className="w-1/2 mx-auto" />
                         <label htmlFor="password" className="m-2">
                             Password
                         </label>
-                        <input className="mb-4"
-                            id="password" name="password" type="password" placeholder="Enter password" required />
+                        <input className="mb-4 text-black"
+                            id="password" name="password" type="password" placeholder="Enter password" defaultValue='123456' required />
 
-                        <input type="hidden" name="redirectTo" value={callbackURL} />
+                        {/* <input type="hidden" name="redirectTo" value={callbackURL} /> */}
                         <button className="w-32 border rounded mx-auto" aria-disabled={isPending}>
                             Login
                         </button>

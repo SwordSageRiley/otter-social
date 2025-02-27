@@ -7,5 +7,5 @@ export const authConfig = {
   pages: {
     signIn: '/login',
   },
-  providers: [ Google, GitHub,],
+  providers: [Google, GitHub,],
 } satisfies NextAuthConfig;

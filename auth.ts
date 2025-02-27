@@ -8,6 +8,12 @@ import type { User } from '@/app/lib/definitions';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
 
+// import { createPool } from '@vercel/postgres';
+
+// const pool = createPool({
+//     connectionString: process.env.POSTGRES_URL,
+// });
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 async function getUser(email: string): Promise<User | undefined> {
@@ -41,10 +47,10 @@ async function checkNewUser(email: string, username: string) {
 
 async function postNewUser(email: string, username: string, password: string) {
     try {
-        const ins = await sql`
+        await sql`
             INSERT INTO users (username, pw, email)
             VALUES (${username}, ${password}, ${email})            `;
-        return ins;
+        return true;
     } catch (error) {
         console.error('Failed to create user:', error);
         throw new Error('Failed to create user.');

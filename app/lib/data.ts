@@ -1,7 +1,6 @@
 // 'use server';
 
 //import postgres from "postgres";
-import { sql } from "@vercel/postgres";
 import { createPool } from '@vercel/postgres';
 
 const pool = createPool({
