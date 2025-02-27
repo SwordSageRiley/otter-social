@@ -5,13 +5,10 @@ import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { useRouter } from 'next/navigation';
-
 export async function authenticate(
     prevState: string | undefined,
     formData: FormData
 ) {
-    const router = useRouter();
     try {
         await signIn('login', formData);
     } catch (error) {
@@ -28,7 +25,7 @@ export async function authenticate(
     } finally {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         revalidatePath('/');
-        router.push('/');
+        redirect('/');
     }
 }
 
