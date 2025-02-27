@@ -1,12 +1,13 @@
 import { ProfileData, UserPosts } from "@/app/lib/data";
+import { profileType } from "@/app/lib/definitions";
 import Post from "@/app/ui/feedpost";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default async function Profile(props: { params: Promise<{ username: string }> }) {
     const params = await props.params;
 
     const profdata = await ProfileData(params.username);
-    const profile = profdata[0];
+    const profile: profileType = profdata[0];
 
     const userposts = await UserPosts(params.username);
 
