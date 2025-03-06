@@ -23,7 +23,6 @@ export async function authenticate(
         }
         throw error;
     } finally {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
         revalidatePath('/');
         redirect('/');
     }

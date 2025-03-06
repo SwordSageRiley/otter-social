@@ -8,7 +8,7 @@ export default async function Feed(){
     return (
             <div className="flex flex-col">
             {posts.map(post => {
-                return <Post postData={post} />
+                return <Post postData={post} id={post.post_id}/>
             })}
         </div>
     );

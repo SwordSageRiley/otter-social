@@ -4,7 +4,7 @@ import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 
-import type { User } from '@/app/lib/definitions';
+import type { UserWithPass, User } from '@/app/lib/definitions';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
 
@@ -16,9 +16,9 @@ import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-async function getUser(email: string): Promise<User | undefined> {
+async function getUser(email: string): Promise<UserWithPass | undefined> {
     try {
-        const user = await sql<User[]>`SELECT * FROM users WHERE email=${email}`;
+        const user = await sql<UserWithPass[]>`SELECT * FROM users WHERE email=${email}`;
         return user[0];
     } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -71,7 +71,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     const user = await getUser(email);
                     if (!user) return null;
                     const passwordsMatch = await bcrypt.compare(password, user.pw);
-                    if (passwordsMatch) return user;
+                    if (passwordsMatch) {
+                        const retUser = {
+                            user_id: user.user_id,
+                            email: user.email,
+                            username: user.username
+                        };
+                        return retUser;
+                    };
                 }
                 return null;
             },
@@ -90,15 +97,43 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         const ins = await postNewUser(email, username, hashedPassword);
                     }
                     const user = await getUser(email);
-                    console.log(user);
                     if (!user) return null;
-                    return user;
+                    const retUser = {
+                        user_id: user.user_id,
+                        email: user.email,
+                        username: user.username
+                    };
+                    return retUser;
                 }
 
                 return null;
             },
         }),
     ],
+    callbacks: {
+        async session({ session, token, user }) {
+            const tempUser = token.user as User;
+            session.user = {
+                user_id: tempUser.user_id,
+                email: tempUser.email,
+                username: tempUser.username,
+                id: '',
+                emailVerified: session.user.emailVerified
+
+            };  
+            return session;
+        },
+        async jwt({ token, user, trigger, session }) {
+            if (user) {
+                token.user = user;
+            }
+            return token;
+        },
+        async signIn(){
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            return true;
+        }
+    }
 });
 
 

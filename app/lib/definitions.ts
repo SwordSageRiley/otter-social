@@ -16,9 +16,15 @@ export type profileType = {
     pfp_url: string
 }
 
-export type User = {
+export type UserWithPass = {
     user_id: string,
     username: string,
     pw: string,
+    email: string
+}
+
+export type User = {
+    user_id: string,
+    username: string,
     email: string
 }
