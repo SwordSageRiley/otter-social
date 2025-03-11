@@ -28,3 +28,8 @@ export type User = {
     username: string,
     email: string
 }
+
+export type Post = {
+    user_id: string,
+    body: string
+}
