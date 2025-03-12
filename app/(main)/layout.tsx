@@ -7,11 +7,13 @@ import PostButton from "@/app/ui/postButton";
 
 import { useSession } from "next-auth/react";
 import { Suspense } from "react";
+import { usePathname } from "next/navigation";
 
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
 
   const { data: session, status } = useSession();
+  const pn = usePathname();
 
   return (
     <section>
@@ -30,7 +32,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           </div>
         </section>
       </div>
-      <PostButton />
+      {(pn != "/newpost" && session) ? <PostButton /> : ""}
+      {/* <PostButton /> */}
     </section>
   );
 }

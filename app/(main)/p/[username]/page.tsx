@@ -7,7 +7,7 @@ export default async function Profile(props: { params: Promise<{ username: strin
     const params = await props.params;
 
     const profdata = await ProfileData(params.username);
-    const profile: profileType = profdata[0];
+    const profile: profileType = profdata[0]; 
 
     const userposts = await UserPosts(params.username);
 
@@ -19,9 +19,9 @@ export default async function Profile(props: { params: Promise<{ username: strin
             </div>
             <p>{profile.bio}</p>
 
-            <div >
+            <div className="mt-8">
                 {userposts.map(post => {
-                    return <Post postData={post} />
+                    return <Post postData={post} key={post.post_id}/>
                 })}
             </div>
         </div>
