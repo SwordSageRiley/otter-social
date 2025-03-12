@@ -16,6 +16,7 @@ import postgres from 'postgres';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+//Retrieve user with email
 async function getUser(email: string): Promise<UserWithPass | undefined> {
     try {
         const user = await sql<UserWithPass[]>`SELECT * FROM users WHERE email=${email}`;
@@ -26,6 +27,7 @@ async function getUser(email: string): Promise<UserWithPass | undefined> {
     }
 }
 
+//Validates email and username arent in use
 async function checkNewUser(email: string, username: string) {
     try {
         const emailEx = await sql`SELECT COUNT(*) FROM users WHERE email=${email}`;
@@ -45,6 +47,7 @@ async function checkNewUser(email: string, username: string) {
     }
 }
 
+//Create new user
 async function postNewUser(email: string, username: string, password: string) {
     try {
         await sql`
@@ -54,6 +57,16 @@ async function postNewUser(email: string, username: string, password: string) {
     } catch (error) {
         console.error('Failed to create user:', error);
         throw new Error('Failed to create user.');
+    }
+}
+
+//Initialize tables that all users need, like settings.
+async function newUserTables(user_id: string){
+    try {
+        await sql`INSERT INTO seettings (user_id) VALUES (${user_id})`;
+
+    } catch (error) {
+        console.log('Something went wrong initiating new uer tables');
     }
 }
 
@@ -103,6 +116,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         email: user.email,
                         username: user.username
                     };
+                    newUserTables(retUser.user_id);
                     return retUser;
                 }
 

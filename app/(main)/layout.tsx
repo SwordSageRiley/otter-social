@@ -33,7 +33,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         </section>
       </div>
       {(pn != "/newpost" && session) ? <PostButton /> : ""}
-      {/* <PostButton /> */}
     </section>
   );
 }
