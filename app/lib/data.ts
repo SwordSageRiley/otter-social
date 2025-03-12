@@ -1,4 +1,4 @@
-// 'use server';
+'use server';
 
 import postgres from "postgres";
 import { createPool } from '@vercel/postgres';
@@ -9,11 +9,12 @@ const pool = createPool({
 
 import { postType, profileType } from "@/app/lib/definitions";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: require });
+const sql = postgres(process.env.POSTGRES_URL! );
+//{ ssl: require }
 
 export async function discoverFeed() {
     try {
-        const postdata = await pool.sql<postType[]>`
+        const postdata = await sql<postType[]>`
          SELECT posts.body, posts.post_id, posts.posted, users.user_id, users.username, users.pfp_url
          FROM posts
          JOIN users ON posts.user_id = users.user_id
@@ -27,7 +28,7 @@ export async function discoverFeed() {
         // ORDER BY posts.posted DESC
         // LIMIT 15`;
 
-        return postdata.rows;
+        return postdata;
 
     } catch (error) {
         console.error('Database Error:', error);
@@ -64,5 +65,17 @@ export async function UserPosts(username: string) {
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch profile posts.');
+    }
+}
+
+export async function PostNewPost(user_id: string, body: string){
+    try {
+        await sql`
+        INSERT INTO posts (user_id, body)
+        VALUES (${user_id}, ${body})`;
+        return true;
+    } catch (error) {
+        console.log(error);
+        throw new Error ('Failed to insert post');
     }
 }

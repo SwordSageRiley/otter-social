@@ -4,6 +4,8 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { PostNewPost } from "@/app/lib/data";
+import { Post } from "@/app/lib/definitions";
 
 export async function authenticate(
     prevState: string | undefined,
@@ -23,7 +25,6 @@ export async function authenticate(
         }
         throw error;
     } finally {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
         revalidatePath('/');
         redirect('/');
     }
@@ -34,7 +35,6 @@ export async function signup(
     formData: FormData
 ) {
     try {
-        console.log('signup action');
         await signIn('signup', formData);
     } catch (error) {
         if (error instanceof AuthError) {
@@ -50,4 +50,24 @@ export async function signup(
     }
 }
 
+export async function sendpost(
+    prevState: string | undefined,
+    formData: FormData
+) {
+    const user_id = formData.get('user_id');
+    const body = formData.get('body');
 
+    try {
+        if (user_id && body) {
+            await PostNewPost(user_id.toString(), body.toString());
+        }
+
+    } catch (error) {
+        return 'Failed to create post';
+    }
+    finally {
+        revalidatePath('/');
+        redirect('/');
+    }
+
+}

@@ -1,10 +1,9 @@
 'use client';
 
 import { usePathname, } from "next/navigation";
-import { getSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-
-import { useSession } from "next-auth/react";
+import { User } from "../lib/definitions";
 
 import {
     BsHouseDoor, BsHouseDoorFill,
@@ -19,6 +18,16 @@ export default function Navbar() {
     const pn = usePathname();
     const { data: session, status } = useSession();
 
+    let user = {
+        user_id: '',
+        email: '',
+        username: ''
+    } as User;
+
+    if (session){
+        user = session.user as User;
+    }
+
     return (
         <div className="p-4 text-xl font-extralight sticky top-16">
 
@@ -31,8 +40,8 @@ export default function Navbar() {
                         : (<Link href='/notifications' className="flex hover:underline"><BsBell /><p>Notifications</p></Link>)}
                     {pn === '/chats' ? (<Link href='/chats' className="flex"><BsChatDotsFill /><p className="font-bold">Chats</p></Link>)
                         : (<Link href='/chats' className="flex hover:underline"><BsChatDots /><p>Chats</p></Link>)}
-                    {pn === '/profile' ? (<Link href='/p/Eevee' className="flex"><BsFilePersonFill /><p className="font-bold">Profile</p></Link>)
-                        : (<Link href='/profile' className="flex hover:underline"><BsFilePerson /><p>Profile</p></Link>)}
+                    {pn.includes('/p/') ? (<Link href={`/p/${user.username}`} className="flex"><BsFilePersonFill /><p className="font-bold">Profile</p></Link>)
+                        : (<Link href={`/p/${user.username}`} className="flex hover:underline"><BsFilePerson /><p>Profile</p></Link>)}
                     {pn === '/settings' ? (<Link href='/settings' className="flex"><BsGearFill /><p className="font-bold">Settings</p></Link>)
                         : (<Link href='/settings' className="flex hover:underline"><BsGear /><p>Settings</p></Link>)}
 
