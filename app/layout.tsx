@@ -27,7 +27,7 @@ export default async function RootLayout({ children, }: { children: React.ReactN
     <html lang="en">
       <body>
         <div className=""></div>
-        <SessionProvider session={session} >
+        <SessionProvider session={session}>
           {children}
         </SessionProvider>
       </body>

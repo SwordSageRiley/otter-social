@@ -19,7 +19,10 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 //Retrieve user with email
 async function getUser(email: string): Promise<UserWithPass | undefined> {
     try {
-        const user = await sql<UserWithPass[]>`SELECT * FROM users WHERE email=${email}`;
+        const user = await sql<UserWithPass[]>`
+        SELECT users.*, settings.light_mode FROM users 
+        WHERE email=${email}
+        JOIN settings ON users.user_id = settings.user_id`;
         return user[0];
     } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -88,7 +91,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         const retUser = {
                             user_id: user.user_id,
                             email: user.email,
-                            username: user.username
+                            username: user.username,
+                            light_mode: user.light_mode
                         };
                         return retUser;
                     };
@@ -114,7 +118,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     const retUser = {
                         user_id: user.user_id,
                         email: user.email,
-                        username: user.username
+                        username: user.username,
+                        light_mode: user.light_mode
                     };
                     newUserTables(retUser.user_id);
                     return retUser;
@@ -131,6 +136,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 user_id: tempUser.user_id,
                 email: tempUser.email,
                 username: tempUser.username,
+                light_mode: tempUser.light_mode,
                 id: '',
                 emailVerified: session.user.emailVerified
 

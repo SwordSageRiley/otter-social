@@ -23,3 +23,7 @@ export async function baseSettings(user_id: string){
         throw new Error('Failed to fetch settings data.');
     }
 }
+
+export async function sendLightMode(user_id: string, light_mode: string){
+    
+}

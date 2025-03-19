@@ -11,6 +11,7 @@ declare module "next-auth" {
         user_id: string,
         email: string,
         username: string,
+        light_mode: string
     }
 }
 

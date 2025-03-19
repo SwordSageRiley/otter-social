@@ -20,13 +20,15 @@ export type UserWithPass = {
     user_id: string,
     username: string,
     pw: string,
-    email: string
+    email: string,
+    light_mode: string
 }
 
 export type User = {
     user_id: string,
     username: string,
-    email: string
+    email: string,
+    light_mode: string
 }
 
 export type Post = {
@@ -37,5 +39,5 @@ export type Post = {
 export type Settings = {
     user_id: string,
     light_mode: boolean,
-    privacy: 'string'
+    privacy: string
 }
