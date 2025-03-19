@@ -33,3 +33,9 @@ export type Post = {
     user_id: string,
     body: string
 }
+
+export type Settings = {
+    user_id: string,
+    light_mode: boolean,
+    privacy: 'string'
+}
