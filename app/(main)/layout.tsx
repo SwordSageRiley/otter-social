@@ -8,16 +8,34 @@ import PostButton from "@/app/ui/postButton";
 import { useSession } from "next-auth/react";
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
+import { createContext, useContext, useState } from "react";
+
+import { User } from "@/app/lib/definitions";
+
+// const LightContext = createContext({light: 'false',setLight: () => {}});
 
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
 
   const { data: session, status } = useSession();
+     let user = {
+          user_id: '',
+          email: '',
+          username: '',
+          light_mode: 'false'
+      } as User;
+      if (session) {
+          user = session.user as User;
+      }
   const pn = usePathname();
+
+  // const [light, setLight] = useState('false');
+  // const value = {light, setLight}
 
   return (
     <section>
-      <div className="flex p-6 bg-green-900 min-h-screen text-white justify-center">
+      {/* <LightContext.Provider value={value} > */}
+      <div className={`flex p-6 min-h-screen justify-center${user.light_mode === "true" ? "bg-white text-black" : "text-white bg-green-900"}`}>
         <section className="" id="nav">
           <Navbar />
         </section>
@@ -33,6 +51,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         </section>
       </div>
       {(pn != "/newpost" && session) ? <PostButton /> : ""}
+      {/* </LightContext.Provider> */}
     </section>
   );
 }
