@@ -21,12 +21,6 @@ export async function discoverFeed() {
          ORDER BY posts.posted DESC
          LIMIT 15`;
 
-        // const postdata = await sql2<postType[]>`
-        // SELECT posts.body, posts.post_id, posts.posted, users.user_id, users.username, users.pfp_url
-        // FROM posts
-        // JOIN users ON posts.user_id = users.user_id
-        // ORDER BY posts.posted DESC
-        // LIMIT 15`;
 
         return postdata;
 

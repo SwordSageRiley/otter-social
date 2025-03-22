@@ -27,3 +27,28 @@ export async function baseSettings(user_id: string){
 export async function sendLightMode(user_id: string, light_mode: string){
     
 }
+
+export async function getPrivacy(user_id: string){
+    try {
+        const privacy = await sql`
+        SELECT privacy FROM settings
+        WHERE settings.user_id = ${user_id}`;
+
+        return privacy[0].privacy
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch settings data.');
+    }
+}
+
+export async function setPrivacy(user_id: string, privacy: string){
+    try {
+        await sql`
+        UPDATE settings
+        SET privacy = ${privacy}
+        WHERE user_id = ${user_id}`;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to post settings data.');
+    }
+}

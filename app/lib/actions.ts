@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { PostNewPost } from "@/app/lib/data";
 import { Post } from "@/app/lib/definitions";
+import { setPrivacy } from "@/app/lib/settingsdata";
 
 export async function authenticate(
     prevState: string | undefined,
@@ -68,6 +69,29 @@ export async function sendpost(
     finally {
         revalidatePath('/');
         redirect('/');
+    }
+
+}
+
+export async function updatePrivacy(
+    prevState: string | undefined,
+    formData: FormData
+) {
+    const user_id = formData.get('user_id');
+    const privacy = formData.get('privacy');
+    try {
+        if (privacy && user_id){
+            setPrivacy(user_id.toString(), privacy.toString());
+        } else {
+            console.log("Form Data Missing");
+        }
+
+    } catch (error) {
+        return 'Failed to update privacy setting';
+    }
+    finally {
+        revalidatePath('/settings');
+        redirect('/settings');
     }
 
 }
